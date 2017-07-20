@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.management.asset.exception.AssetMgmtException;
 import com.management.asset.model.shop.Address;
 import com.management.asset.model.shop.Shop;
 import com.management.asset.service.IShopService;
@@ -44,22 +45,29 @@ public class ShopController {
 	 * @param ShopName
 	 * @return Shop
 	 */
-	@ApiOperation(value = "Getting a Shop via id")
-	@GetMapping("/shops/{id}")
-	public Shop getShop(@PathVariable String ShopName ){
+	/*@ApiOperation(value = "Getting a Shop via id")
+	@GetMapping("/shops/{ShopName}")
+	public Shop getShop(@PathVariable("ShopName") String ShopName ){
 		return service.getShop(ShopName);
-	}
+	}*/
 	
 	/**
 	 * Method adds a shop
 	 * 
 	 * @param shop
 	 * @return Address
+	 * @throws AssetMgmtException 
 	 */
 	@ApiOperation(value = "Adding a Shop ")
 	@PostMapping("/shops")
-	public Address addShop(@RequestBody Shop shop){
+	public Address addShop(@RequestBody Shop shop) throws AssetMgmtException{
 		return service.addShop(shop);
+	}
+	
+	@ApiOperation(value = "Near a Shop ")
+	@PostMapping("/shops/{shopName}")
+	public Shop nearByShop(@PathVariable("shopName") String ShopName) throws AssetMgmtException{
+		return service.nearByShop(ShopName);
 	}
 
 }

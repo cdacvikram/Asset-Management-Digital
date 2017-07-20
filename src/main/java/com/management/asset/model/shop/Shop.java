@@ -1,5 +1,12 @@
 package com.management.asset.model.shop;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import lombok.Data;
 
 /**
@@ -8,14 +15,29 @@ import lombok.Data;
  * @author Vikram
  */
 @Data
-public class Shop {
+@Entity
+@Table(name="shop")
+public class Shop implements Serializable, Cloneable {
 	
+	/** Default serial Version UID */
+	private static final long serialVersionUID = 1L;
+
 	/** Properties **/
+	@Id
+	@Column(name="shop_name")
 	private String shopName;
+	
+	@Column(name="shop_address")
 	private String shopAddress;
+	
+	@Column(name="shop_postcode")
 	private String shopPostCode;
-	private String latitude;
-	private String longitude;
+	
+	@Column(name="latitude")
+	private double latitude;
+	
+	@Column(name="longitude")
+	private double longitude;
 	
 	/**
 	 * default constructor
@@ -45,4 +67,7 @@ public class Shop {
 				+ ", latitude=" + latitude + ", longitude=" + longitude + "]";
 	}
 
+	public Object clone()throws CloneNotSupportedException{  
+		return super.clone();  
+	}
 }

@@ -1,4 +1,4 @@
-package com.management.asset;
+/*package com.management.asset;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -12,72 +12,76 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.web.client.RestTemplate;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.Mock;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.management.asset.model.google.GoogleGeoCode;
-import com.management.asset.model.google.GoogleGeoGeometry;
-import com.management.asset.model.google.GoogleGeoLatLng;
-import com.management.asset.model.google.GoogleGeoResult;
+import com.google.maps.GeocodingApi;
+import com.google.maps.GeocodingApiRequest;
+import com.google.maps.model.GeocodingResult;
+import com.google.maps.model.Geometry;
+import com.google.maps.model.LatLng;
 import com.management.asset.model.shop.Address;
 import com.management.asset.model.shop.Shop;
 import com.management.asset.service.ShopService;
 
-/**
+*//**
  * TestShopService class for Shop Service
  * 
  * @author Vikram
- */
-@RunWith(MockitoJUnitRunner.class)
+ *//*
+@RunWith(PowerMockRunner.class)
 public class TestShopService {
 	
-	/**
+	private static final Double LATITUDE = 18.5888203;
+    private static final Double LONGITUDE = 73.7824641;
+	
+	*//**
 	 * The shop service
-	 */
+	 *//*
 	@InjectMocks
 	private ShopService service;
 	
-	/**
+	*//**
 	 * The rest template
-	 */
+	 *//*
 	@Mock
-    private RestTemplate restTemplate;
+    private GeocodingApiRequest request;
 	
-	/**
+	*//**
      * Sets up.
      *
      * @throws URISyntaxException the uri syntax exception
      * @throws IOException        the io exception
-     */
+     *//*
 	@Before
-    public void setUp() throws URISyntaxException, IOException {
-		
-		GoogleGeoLatLng  location = new GoogleGeoLatLng();
-		GoogleGeoGeometry geometry = new GoogleGeoGeometry();
-		GoogleGeoResult [] results = new GoogleGeoResult[1];
-		GoogleGeoResult googleGeoResult = new GoogleGeoResult();
-		GoogleGeoCode googleGeoCode  = new GoogleGeoCode();
-		geometry.setLocation(location);
-		googleGeoResult.setGeometry(geometry);
-		results[0] = googleGeoResult;
-		googleGeoCode.setResults(results);
-	
-		
-		googleGeoCode.getResults()[0].getGeometry().getLocation().setLat("18.585582");
-		googleGeoCode.getResults()[0].getGeometry().getLocation().setLng("73.781668");
-		googleGeoCode.setStatus("OK");
-	
-        Mockito.when(restTemplate.getForObject(Matchers.anyString(), Matchers.anyObject())).thenReturn(googleGeoCode);
+    public void setUp() throws Exception {
+
+		LatLng location = new LatLng(LATITUDE, LONGITUDE);
+		Geometry geometry = new Geometry();
+		geometry.location = location;
+		GeocodingResult geocodingResult = new GeocodingResult();
+		geocodingResult.geometry = geometry;
+        GeocodingResult[] geocodingResults = new GeocodingResult[] { geocodingResult };
+        Mockito.when(request.latlng(location)).thenReturn(request);
+        Mockito.when(request.await()).thenReturn(geocodingResults);
+        PowerMockito.mockStatic(GeocodingApi.class);
+        PowerMockito.when(GeocodingApi.geocode(Matchers.anyObject(), Matchers.anyString()).await()).thenReturn(geocodingResults);
+        
+        mockStatic(GeocodingApi.class);
+
+        when(GeocodingApi.geocode(eq(geoApiContext)))
+          .thenReturn(geocodingApiRequest);
+        
+//		Mockito.when((GeocodingApi.geocode(Matchers.anyObject(), Matchers.anyString())).thenReturn(request);
 		
 	}
 	
-	/**
+	*//**
      * Test single add shop
      *
      * @throws Exception the exception
-     */
+     *//*
 	@Test
 	public void testAddShop() throws Exception{
 		
@@ -85,7 +89,7 @@ public class TestShopService {
 		shop.setShopName("shopone");
 		shop.setShopAddress("CopaCabana,Omka, Pimple Nilakh, Pimpri-Chinchwad, Maharashtra");
 		shop.setShopPostCode("12345");
-		Mockito.verify(restTemplate, Mockito.times(0)).getForObject(Matchers.anyString(), Matchers.eq(GoogleGeoCode.class));
+		Mockito.verify(GeocodingApi.geocode(Matchers.anyObject(), Matchers.anyString()));
 		Address address = service.addShop(shop);
 		Shop shop2 = service.getShop("shopone");
         assertEquals("18.585582", shop2.getLatitude());
@@ -94,11 +98,11 @@ public class TestShopService {
 		assertNull(address.getPreviousAddress());
 	}
 	
-	/**
+	*//**
      * Test add shop with duplicate shop name
      *
      * @throws Exception the exception
-     */
+     *//*
 	@Test
 	public void testAddDuplicateShop() throws Exception{
 		
@@ -106,7 +110,7 @@ public class TestShopService {
 		shop.setShopName("shoptwo");
 		shop.setShopAddress("Mother's Kitchen, Vishal Nagar, Pimpri-Chinchwad, Maharashtra");
 		shop.setShopPostCode("411038");
-		Mockito.verify(restTemplate, Mockito.times(0)).getForObject(Matchers.anyString(), Matchers.eq(GoogleGeoCode.class));
+		Mockito.verify(GeocodingApi.geocode(Matchers.anyObject(), Matchers.anyString()));
 		Address address = service.addShop(shop);
 		Shop shop2 = service.getShop("shoptwo");
         assertEquals("18.585582", shop2.getLatitude());
@@ -127,3 +131,4 @@ public class TestShopService {
 	}
 
 }
+*/
